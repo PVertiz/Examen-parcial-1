@@ -199,6 +199,26 @@ int main()
 			imagenGradiante.at<uchar>(Point(i, j)) = ceil(atan( imagenhy.at<uchar>(Point(i, j))/( imagenhx.at<uchar>(Point(i, j))+1)));
 		}
 	}
+
+	//establecer maximos y minimos
+	int max = 229,min=89;
+	Mat imagenAcotada(fila_original, columna_original, CV_8UC1);//imagen acotada
+	//recorremos toda  la imagen g
+	for (int i = 0; i < columna_original; i++) {
+		for (int j = 0; j < fila_original; j++)
+		{
+			if (imagenG.at<uchar>(Point(i, j))<=min) {
+				imagenAcotada.at<uchar>(Point(i, j)) = 0;
+			}else 
+			if (imagenG.at<uchar>(Point(i, j)) >= max) {
+				imagenAcotada.at<uchar>(Point(i, j)) = 255;
+			}
+			else {
+				imagenAcotada.at<uchar>(Point(i, j)) = imagenG.at<uchar>(Point(i, j));
+			}
+		}
+	}
+
 	namedWindow("imagen_original", WINDOW_AUTOSIZE);//imagen original
 	imshow("imagen_original", imagen);
 	cout << "\nTamaño imagen1: (" << imagen.cols << "," << imagen.rows << ") \n";
@@ -222,11 +242,13 @@ int main()
 	imshow("imagen_G", imagenG);//imagen |G|
 	cout << "\nTamaño imagen5: (" << imagenG.cols << "," << imagenG.rows << ") \n";
 
-	imshow("imagen_gradiante", imagenGradiante);//imagen gradiante
-	cout << "\nTamaño imagen6: (" << imagenGradiante.cols << "," << imagenGradiante.rows << ") \n";
+
+	imshow("borde_canny", imagenAcotada);//imagen canny (acotada)
+	cout << "\nTamaño imagen6: (" << imagenAcotada.cols << "," << imagenAcotada.rows << ") \n";
 	/************************/
 
 	waitKey(0); //Función para esperar
 	return 1;
+	//fin
 }
 /////////////////////////////////////////////////////////////////////////
